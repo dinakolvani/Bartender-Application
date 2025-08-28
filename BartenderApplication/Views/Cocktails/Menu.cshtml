@@ -1,0 +1,32 @@
+@model IEnumerable<BartenderApp.Models.Cocktail>
+@{
+    ViewData["Title"] = "Menu";
+}
+<h2>Cocktail Menu</h2>
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success">@TempData["msg"]</div>
+}
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th class="text-end">Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td>@c.Name</td>
+                <td>@c.Description</td>
+                <td class="text-end">@c.Price.ToString("C")</td>
+                <td class="text-end">
+                    <a class="btn btn-primary" asp-controller="Orders" asp-action="Create" asp-route-cocktailId="@c.Id"> Order</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

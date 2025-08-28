@@ -1,0 +1,55 @@
+@model IEnumerable<BartenderApp.Models.Order>
+@using BartenderApp.Models
+@{
+    ViewData["Title"] = "Order Queue";
+}
+<h2>Order Queue</h2>
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Time</th>
+            <th>Customer</th>
+            <th>Cocktail</th>
+            <th>Status</th>
+            <th class="text-end">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var o in Model)
+        {
+            <tr>
+                <td>@o.Id</td>
+                <td>@o.OrderedAt.ToLocalTime().ToString("g")</td>
+                <td>@o.CustomerName</td>
+                <td>@o.Cocktail?.Name</td>
+                <td>
+                    <span class="badge bg-@GetBadge(o.Status)">@o.Status</span>
+                </td>
+                <td class="text-end">
+                    <form asp-action="Advance" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@o.Id" />
+                        <button type="submit" class="btn btn-sm btn-primary">Advance</button>
+                    </form>
+                    <form asp-action="Cancel" method="post" class="d-inline ms-1">
+                        <input type="hidden" name="id" value="@o.Id" />
+                        <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@functions {
+    string GetBadge(OrderStatus s) => s switch
+    {
+        OrderStatus.Placed => "secondary",
+        OrderStatus.InPreparation => "warning",
+        OrderStatus.ReadyForPickup => "success",
+        OrderStatus.Completed => "dark",
+        OrderStatus.Cancelled => "danger",
+        _ => "secondary"
+    };
+}
