@@ -1,9 +1,5 @@
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
-// 👇 use your actual namespaces here
 using BartenderApp.Data;
 using BartenderApp.Models;
 
@@ -37,7 +33,7 @@ namespace BartenderApp.Controllers
             }
 
             order.OrderedAt = System.DateTime.UtcNow;
-            order.Status = OrderStatus.Placed;
+            order.Status = OrdersStatus.Placed;
 
             _db.Orders.Add(order);
             await _db.SaveChangesAsync();
@@ -51,13 +47,57 @@ namespace BartenderApp.Controllers
         {
             var queue = await _db.Orders
                 .Include(o => o.Cocktail)
-                .Where(o => o.Status == OrderStatus.Placed ||
-                            o.Status == OrderStatus.InPreparation)
+                .Where(o => o.Status == OrdersStatus.Placed ||
+                            o.Status == OrdersStatus.InProgress)
+                            .OrderBy(o => o.Status == OrdersStatus.Completed)
+                            .Where(o => o.Status != OrdersStatus.Canceled)
                 .OrderBy(o => o.OrderedAt)
                 .ToListAsync();
 
             return View(queue);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var order = await _db.Orders.FindAsync(id);
+            if (order == null) return NotFound();
+
+            order.Status = OrdersStatus.Canceled;
+            await _db.SaveChangesAsync();
+
+            TempData["msg"] = $"Order #{order.Id} canceled.";
+            return RedirectToAction(nameof(Queue));
+        }
+
+        [HttpPost]
+[ValidateAntiForgeryToken]
+public async Task<IActionResult> Advance(int id)
+{
+    var order = await _db.Orders.FindAsync(id);
+    if (order == null) return NotFound();
+
+    // Move the order forward one step
+    switch (order.Status)
+    {
+        case OrdersStatus.Placed:
+            order.Status = OrdersStatus.InProgress;
+            break;
+
+        case OrdersStatus.InProgress:
+            order.Status = OrdersStatus.Completed;
+            break;
+
+        // Completed or Canceled stay as-is
+        default:
+            break;
+    }
+
+    await _db.SaveChangesAsync();
+    TempData["msg"] = $"Order #{order.Id} → {order.Status}";
+    return RedirectToAction(nameof(Queue));
+}
        
     }
 }

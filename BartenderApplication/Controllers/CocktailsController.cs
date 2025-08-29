@@ -17,5 +17,13 @@ namespace BartenderApp.Controllers
             var items = await _db.Cocktails.AsNoTracking().ToListAsync();
             return View(items);
         }
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            // simplest: reuse the Menu view so /Cocktails works
+            var items = await _db.Cocktails.AsNoTracking().ToListAsync();
+            return View("Menu", items);  // looks for Views/Cocktails/Menu.cshtml
+        }
+
     }
 }

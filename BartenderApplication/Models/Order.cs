@@ -33,7 +33,7 @@ namespace BartenderApp.Models
 
         public DateTime OrderedAt { get; set; } = DateTime.UtcNow;
 
+        public OrdersStatus Status { get; set; } = OrdersStatus.Placed;
 
-        public OrderStatus Status { get; set; } = OrderStatus.Placed;
     }
 }

@@ -17,7 +17,6 @@
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/scopedcss/bundle/BartenderApplication.styles.css
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/scopedcss/projectbundle/BartenderApplication.bundle.scp.css
-/Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/compressed/kxsv3w1wlk-b9sayid5wm.gz
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/compressed/ylvn1xbzhx-61n19gt1b8.gz
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/compressed/9zwmujtupn-xtxxf3hu2r.gz
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/compressed/rcjnq8j32l-bqjiyaj88i.gz
@@ -219,3 +218,5 @@
 /Users/dinak./Bartender Application/BartenderApplication/bin/Debug/net9.0/runtimes/win-x86/native/e_sqlite3.dll
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/BartenderApplication.csproj.AssemblyReference.cache
 /Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/Bartende.33DEFF67.Up2Date
+/Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/BartenderApplication.sourcelink.json
+/Users/dinak./Bartender Application/BartenderApplication/obj/Debug/net9.0/compressed/kxsv3w1wlk-6558hx6ku5.gz

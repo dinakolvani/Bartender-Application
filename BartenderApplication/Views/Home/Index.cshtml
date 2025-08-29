@@ -1,11 +1,20 @@
 ﻿@{
-ViewData["Title"] = "Bartender App";
+    ViewData["Title"] = "Bartender Application";
 }
-<div class="text-center">
-<h1 class="display-4">Bartender Application</h1>
-<p>Choose an option:</p>
-<div class="mt-4">
-<a class="btn btn-primary btn-lg me-2" asp-controller="Cocktails" asp-action="Menu">Order a Cocktail</a>
-<a class="btn btn-outline-dark btn-lg" asp-controller="Orders" asp-action="Queue">Bartender Order Queue</a>
-</div>
+
+<div class="container text-center mt-5">
+    <h1 class="display-4 fw-bold mb-3">🍸 Bartender Application</h1>
+    <p class="lead mb-4">Choose an option:</p>
+
+    <div class="d-flex justify-content-center gap-3">
+        <!-- Order a Cocktail -->
+        <a asp-controller="Cocktails" asp-action="Index" class="btn btn-autumn-primary">
+            Order a Cocktail
+        </a>
+
+        <!-- Bartender Order Queue -->
+        <a asp-controller="Orders" asp-action="Queue" class="btn btn-autumn-outline">
+            Bartender Order Queue
+        </a>
+    </div>
 </div>

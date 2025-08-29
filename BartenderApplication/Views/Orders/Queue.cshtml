@@ -3,44 +3,123 @@
 @{
     ViewData["Title"] = "Order Queue";
 }
-<h2>Order Queue</h2>
-<table class="table table-hover align-middle">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Time</th>
-            <th>Customer</th>
-            <th>Cocktail</th>
-            <th>Status</th>
-            <th class="text-end">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var o in Model)
-        {
-            <tr>
-                <td>@o.Id</td>
-                <td>@o.OrderedAt.ToLocalTime().ToString("g")</td>
-                <td>@o.CustomerName</td>
-                <td>@o.Cocktail?.Name</td>
-                <td>
-                    <span class="badge bg-@GetBadge(o.Status)">@o.Status</span>
-                </td>
-                <td class="text-end">
-                    <form asp-action="Advance" method="post" class="d-inline">
-                        <input type="hidden" name="id" value="@o.Id" />
-                        <button type="submit" class="btn btn-sm btn-primary">Advance</button>
-                    </form>
-                    <form asp-action="Cancel" method="post" class="d-inline ms-1">
-                        <input type="hidden" name="id" value="@o.Id" />
-                        <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
+<style>
+    /* === Autumn theme (keeps your existing classes) === */
+    :root{
+        --fall-pumpkin:#d97706;   /* btn primary */
+        --fall-amber:#b45309;
+        --fall-table-head:#fff7ed;
+        --fall-row-hover:#fff3e0;
+        --fall-border:#f3e3cf;
+        --fall-placed:#fde68a;    /* secondary */
+        --fall-prep:#fcd34d;      /* warning  */
+        --fall-ready:#bbf7d0;     /* success  */
+        --fall-complete:#cbd5e1;  /* dark-ish */
+        --fall-cancel:#fecaca;    /* danger   */
+        --fall-cranberry:#b91c1c;
+    }
+
+    body{ background: radial-gradient(1200px 550px at 50% -100px, #fff7ed, #fffaf0); }
+
+    .card-fall{
+        border:1px solid var(--fall-border);
+        border-radius:.9rem;
+        box-shadow:0 10px 22px rgba(101,55,14,.06);
+        overflow:hidden;
+    }
+    .card-fall .card-header{
+        background: linear-gradient(90deg, var(--fall-pumpkin), var(--fall-amber));
+        color:#fff;
+    }
+
+    /* Table */
+    .table-fall thead th{
+        background:var(--fall-table-head);
+        border-bottom:2px solid var(--fall-border) !important;
+        text-transform:uppercase;
+        font-size:.8rem;
+        color:#4a3425;
+    }
+    .table-fall tbody tr:hover{ background:var(--fall-row-hover); }
+
+    /* Re-tone standard Bootstrap badge colors you already use via GetBadge() */
+    .badge.bg-secondary{ background:var(--fall-placed) !important; color:#7c2d12; }
+    .badge.bg-warning{   background:var(--fall-prep)   !important; color:#7c2d12; }
+    .badge.bg-success{   background:var(--fall-ready)  !important; color:#14532d; }
+    .badge.bg-dark{      background:var(--fall-complete)!important; color:#0f172a; }
+    .badge.bg-danger{    background:var(--fall-cancel) !important; color:#7f1d1d; }
+
+    /* Buttons: keep your existing classes, just recolor them */
+    .btn-primary{
+        background:var(--fall-pumpkin);
+        border-color:var(--fall-pumpkin);
+    }
+    .btn-primary:hover{ background:var(--fall-amber); border-color:var(--fall-amber); }
+
+    .btn-outline-danger{
+        color:var(--fall-cranberry);
+        border-color:#fca5a5;
+        background:#fff;
+    }
+    .btn-outline-danger:hover{
+        color:#fff; background:var(--fall-cranberry); border-color:var(--fall-cranberry);
+    }
+</style>
+
+<div class="container py-4">
+    <div class="card card-fall">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <h3 class="m-0 fw-semibold">Order Queue</h3>
+            <small class="opacity-75">Updated @DateTime.Now.ToString("g")</small>
+        </div>
+
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <!-- just add table-fall class; keep your existing table classes -->
+                <table class="table table-hover align-middle table-fall mb-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Time</th>
+                            <th>Customer</th>
+                            <th>Cocktail</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @* —— KEEP YOUR EXISTING ROW/LOOP/Forms EXACTLY AS YOU HAVE —— *@
+                        @foreach (var o in Model)
+                        {
+                            <tr>
+                                <td>@o.Id</td>
+                                <td>@o.OrderedAt.ToLocalTime().ToString("g")</td>
+                                <td>@o.CustomerName</td>
+                                <td>@o.Cocktail?.Name</td>
+                                <td>
+                                    <span class="badge bg-@GetBadge((OrderStatus)o.Status) px-3 py-2 rounded-pill">
+                                        @o.Status
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <form asp-action="Advance" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@o.Id" />
+                                        <button type="submit" class="btn btn-sm btn-primary">Advance</button>
+                                    </form>
+                                    <form asp-action="Cancel" method="post" class="d-inline ms-1">
+                                        <input type="hidden" name="id" value="@o.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 @functions {
     string GetBadge(OrderStatus s) => s switch
